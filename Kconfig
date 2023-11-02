@@ -1,0 +1,31 @@
+menu "AT24C"
+
+    config AT24C_ADDRESS
+        hex "Address [HEX]"
+        range 0x0 0xFF
+        default 0x50
+        help
+            AT24C address on I2C.
+    
+    config AT24C_SIZE
+        hex "Size in bytes [hex]"
+        range 0x0 0xFFFF
+        default 0x1000
+        help
+            Size of the memory in words (bytes).
+
+    config AT24C_COMMAND_TIMEOUT
+        int "Command timeout (ms)"
+        range 0 10000
+        default 100
+        help
+            Set the timeout of a command (ms).
+    
+    config AT24C_READ_WAIT_TIME
+        int "Reading wait time (ms)"
+        range 0 10000
+        default 10
+        help
+            Set the wait time in reading command (ms).
+
+endmenu

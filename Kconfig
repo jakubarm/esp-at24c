@@ -13,6 +13,13 @@ menu "AT24C"
         default 0x1000
         help
             Size of the memory in words (bytes).
+    
+    config AT24C_PAGE_SIZE
+        hex "Page size in bytes [hex]"
+        range 0x0 0xFF
+        default 0x20
+        help
+            Page size for writting (bytes).
 
     config AT24C_COMMAND_TIMEOUT
         int "Command timeout (ms)"

@@ -87,7 +87,7 @@ esp_err_t at24c_write_byte(at24c_t *me, uint16_t memAddr, uint8_t d) {
 esp_err_t at24c_read(at24c_t *me, uint16_t memAddr, uint16_t len, uint8_t *buffer) {
     CHECK_ARG(me);
 
-    ESP_LOGI(TAG, "Read port %d address %d memAddr %d len %d", me->port, me->address, memAddr, len);
+    ESP_LOGD(TAG, "Read port %d address %d memAddr %d len %d", me->port, me->address, memAddr, len);
     i2c_cmd_handle_t cmd = i2c_cmd_link_create();
     i2c_master_start(cmd);
     i2c_master_write_byte(cmd, (me->address << 1) | I2C_MASTER_WRITE, ACK_CHECK_EN);
@@ -124,7 +124,7 @@ esp_err_t at24c_read(at24c_t *me, uint16_t memAddr, uint16_t len, uint8_t *buffe
 esp_err_t at24c_write(at24c_t *me, uint16_t memAddr, uint16_t len, uint8_t *buffer) {
     CHECK_ARG(me);
 
-    ESP_LOGI(TAG, "Write port %d address %d memAddr %d len %d", me->port, me->address, memAddr, len);
+    ESP_LOGD(TAG, "Write port %d address %d memAddr %d len %d", me->port, me->address, memAddr, len);
     uint16_t current = memAddr;
     while(current < (memAddr + len))
     {

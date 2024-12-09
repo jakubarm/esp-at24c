@@ -125,7 +125,7 @@ esp_err_t at24c_write(at24c_t *me, uint16_t memAddr, uint16_t len, uint8_t *buff
     CHECK_ARG(me);
 
     ESP_LOGD(TAG, "Write port %d address %d memAddr %d len %d", me->port, me->address, memAddr, len);
-    uint16_t current = memAddr;
+    uint32_t current = memAddr;
     while(current < (memAddr + len))
     {
         i2c_cmd_handle_t cmd = i2c_cmd_link_create();
@@ -133,7 +133,7 @@ esp_err_t at24c_write(at24c_t *me, uint16_t memAddr, uint16_t len, uint8_t *buff
         i2c_master_write_byte(cmd, (me->address << 1) | I2C_MASTER_WRITE, ACK_CHECK_EN);
         i2c_master_write_byte(cmd, (uint8_t)(current >> 8), ACK_CHECK_EN);
         i2c_master_write_byte(cmd, (uint8_t)(current & 0xFF), ACK_CHECK_EN);
-        for (uint16_t i = 0; i < CONFIG_AT24C_PAGE_SIZE; i++) {
+        for (uint32_t i = 0; i < me->page_size; i++) {
             if ((current + i) < (memAddr + len))
                 i2c_master_write_byte(cmd, buffer[current + i - memAddr], ACK_CHECK_EN);
         }
@@ -142,10 +142,10 @@ esp_err_t at24c_write(at24c_t *me, uint16_t memAddr, uint16_t len, uint8_t *buff
         esp_err_t ret = i2c_master_cmd_begin(me->port, cmd, pdMS_TO_TICKS(CONFIG_AT24C_COMMAND_TIMEOUT));
         i2c_cmd_link_delete(cmd);
         if( ret != ESP_OK ) {
-            ESP_LOGE(TAG, "Error writing address %d (error %d)", current, ret);
+            ESP_LOGE(TAG, "Error writing address %lu (error %d)", current, ret);
             return ESP_FAIL;
         }
-        current += CONFIG_AT24C_PAGE_SIZE;
+        current += me->page_size;
         vTaskDelay(pdMS_TO_TICKS(CONFIG_AT24C_READ_WAIT_TIME));
     }
 

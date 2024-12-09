@@ -26,6 +26,7 @@ typedef struct {
     i2c_port_t port;    /**< I2C_NUM_0 or I2C_NUM_1 */
     uint8_t address;    /**< Hardware address of the device */
     uint32_t size;      /**< Size of the memoru in bytes */
+    uint32_t page_size;
 } at24c_t;
 
 /**
